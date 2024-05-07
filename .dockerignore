@@ -1,0 +1,19 @@
+# git files
+.git
+.gitignore
+
+# github actions
+.github/*
+
+# documentation
+*.md
+
+# files created by various tools
+.benchmarks/*
+.coverage
+.hadolint.yaml
+.ipynb_checkpoints
+.mypy_cache
+.pylintrc
+.pytest_cache
+*.bak

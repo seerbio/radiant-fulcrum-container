@@ -1,0 +1,7 @@
+venv
+.vscode
+__pycache__
+.DS_Store
+.coverage
+cov.xml
+.ipynb_checkpoints
