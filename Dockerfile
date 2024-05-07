@@ -140,7 +140,7 @@ FROM base AS app
 # Set labels
 #
 LABEL author="Seer, Inc."
-LABEL description="TODO: describe this container"
+LABEL description="Pythia and Scry, packaged for local execution"
 
 #
 # TODO: Copy dependencies from the build stage

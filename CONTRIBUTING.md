@@ -5,8 +5,8 @@
 1. Clone the repository
 
    ```shell
-   git clone git@github.com:seerbio/repo-name.git
-   cd repo-name
+   git clone git@github.com:seerbio/scry-pythia-container.git
+   cd scry-pythia-container
    ```
 
    Alternatively, create a fork through GitHub and clone that repository.
@@ -20,12 +20,6 @@
 
    This will ensure all sources are checked for errors and consistently
    formatted whenever you commit to the repository.
-
-3. Set up `pytest` for testing:
-
-   ```shell
-   pip install pytest
-   ```
 
 ## Developing changes
 
@@ -41,7 +35,7 @@
    Be sure to develop unit tests and ensure that all existing tests pass:
 
    ```shell
-   pytest
+   ./test-container.sh
    ```
 
 3. Push changes back to the repository (or your fork).
@@ -60,5 +54,5 @@ release automatically using GitHub.
    the `main` branch and name it for the new version number, i.e. `v3.4.5`.
    Use the same string as the release title. Click "generate release notes" to
    automatically create a list of PRs since the last release.
-3. After creating the release, the package will be automatically built and
+3. After creating the release, the container image will be automatically built and
    deployed with the new version number.
