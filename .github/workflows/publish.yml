@@ -5,16 +5,47 @@ on:
     types: [created]
 
 jobs:
-  tag_container_image:
+  publish_x86_docker:
     runs-on: [self-hosted, aws-master, X64]
     steps:
       # Necessary to set up the token required to push the commit tag to GitHub
       - name: Check out code
         uses: actions/checkout@v2
 
-      - name: Tag container
+      - name: Tag x86 container image
         uses: seerbio/action-tag-container@2.1.0
         with:
           container: seer/pythia-scry
           repository: 718843040700.dkr.ecr.us-west-2.amazonaws.com
-          addl_tags: latest
+          build_tag_prefix: x86_64-build-
+          tag_suffix: -x86_64
+          addl_tags: latest-x86_64
+
+  publish_arm_docker:
+    runs-on: [self-hosted, aws-master, ARM64]
+    steps:
+      # Necessary to set up the token required to push the commit tag to GitHub
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Tag ARM container image
+        uses: seerbio/action-tag-container@2.1.0
+        with:
+          container: seer/pythia-scry
+          repository: 718843040700.dkr.ecr.us-west-2.amazonaws.com
+          build_tag_prefix: aarch64-build-
+          tag_suffix: -aarch64
+          addl_tags: latest-aarch64
+
+  publish_docker_manifest:
+    runs-on: [self-hosted, aws-master]
+    needs: [publish_x86_docker, publish_arm_docker]
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      - name: Publish Docker Manifest
+        env:
+          CONTAINER: seer/pythia-scry
+          REPOSITORY: 718843040700.dkr.ecr.us-west-2.amazonaws.com
+          ADDL_TAGS: latest
+        run: ./deploy_docker_manifest.sh "${ADDL_TAGS}"

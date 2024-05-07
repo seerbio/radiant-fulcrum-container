@@ -3,25 +3,41 @@ name: Build and Push Container
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
-  build:
+  build-x86_64:
     # Require that this step run on a self-hosted runner
     # within the aws-master AWS account; this will ensure
     # it has the necessary access to ECR.
     runs-on: [self-hosted, aws-master, X64]
-
-    env:
-      CONTAINER_TAG: build-${{ github.run_number }}
 
     steps:
       - name: Check out code
         uses: actions/checkout@v2
 
       - name: Build and tag container image
-        uses: seerbio/action-build-container@1.2.0
+        uses: seerbio/action-build-container@1.1.0
         with:
           container: seer/pythia-scry
+          container_tag: x86_64-build-${{ github.run_number }}
           repository: 718843040700.dkr.ecr.us-west-2.amazonaws.com
-          test_script: ./test-container.sh
+          test_script: ./test_container.sh
+
+  build-aarch64:
+    # Require that this step run on a self-hosted runner
+    # within the aws-master AWS account; this will ensure
+    # it has the necessary access to ECR.
+    runs-on: [self-hosted, aws-master, ARM64]
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Build and tag container image
+        uses: seerbio/action-build-container@1.1.0
+        with:
+          container: seer/pythia-scry
+          container_tag: aarch64-build-${{ github.run_number }}
+          repository: 718843040700.dkr.ecr.us-west-2.amazonaws.com
+          test_script: ./test_container.sh

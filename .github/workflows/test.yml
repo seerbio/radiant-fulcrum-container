@@ -1,17 +1,25 @@
-name: Test and Lint sources
+name: Test and Lint
 on: [pull_request]
 jobs:
-  test:
-    name: Test Container
-    runs-on: [self-hosted, aws-master, X64]
+  test-x86_64:
+    name: Test Container (x86_64)
+    runs-on: [self-hosted, X64]
     steps:
       - uses: actions/checkout@v2
       - name: container-test
-        run: ./test-container.sh
+        run: ./test_container.sh
+
+  test-aarch64:
+    name: Test Container (aarch64)
+    runs-on: [self-hosted, ARM64]
+    steps:
+      - uses: actions/checkout@v2
+      - name: container-test
+        run: ./test_container.sh
 
   lint-container:
     name: Lint Container
-    runs-on: [self-hosted, aws-master, X64]
+    runs-on: ubuntu-20.04 # x86_64
     steps:
       - uses: actions/checkout@v2
       - name: hadolint
@@ -21,10 +29,19 @@ jobs:
 
   lint-actions:
     name: Lint Actions Config
-    runs-on: [self-hosted, aws-master, X64]
+    runs-on: ubuntu-20.04 # x86_64
     steps:
       - uses: actions/checkout@v2
       - name: actionlint
         uses: reviewdog/action-actionlint@v1
+        with:
+          reporter: github-pr-check # Default
+
+  lint-scripts:
+    name: Lint Shell Scripts
+    runs-on: ubuntu-20.04 # x86_64
+    steps:
+      - uses: actions/checkout@v2
+      - uses: reviewdog/action-shellcheck@v1
         with:
           reporter: github-pr-check # Default
