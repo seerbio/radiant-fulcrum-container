@@ -6,8 +6,8 @@
 # that are shared between the build stage and final image.
 #
 ################################################
-ARG pythia-version=seer/pythia-dia:latest
-FROM ${pythia-version} AS base
+ARG PYTHIA-VERSION=latest
+FROM seer/pythia-dia:${PYTHIA-VERSION} AS base
 
 #
 # Update, upgrade, and install python.
