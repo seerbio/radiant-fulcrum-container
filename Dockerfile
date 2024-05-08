@@ -127,6 +127,8 @@ LABEL description="Pythia and Scry, packaged for local execution"
 #
 COPY --from=build /usr/local/lib/python3.10 /usr/local/lib/python3.10
 COPY --from=build /usr/local/bin /usr/local/bin
+COPY README.md /
+COPY Dockerfile /
 
 ENV PATH=$PATH:/usr/local/bin/PythiaDIACpp/
 

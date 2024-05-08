@@ -5,9 +5,6 @@
 # github actions
 .github/*
 
-# documentation
-*.md
-
 # files created by various tools
 .benchmarks/*
 .coverage
