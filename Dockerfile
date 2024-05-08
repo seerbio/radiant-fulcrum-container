@@ -6,8 +6,8 @@
 # that are shared between the build stage and final image.
 #
 ################################################
-ARG pythia-version=seer/pythia-dia:latest
-FROM ${pythia-version} AS base
+ARG PYTHIA_VERSION=718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-dia:latest
+FROM $PYTHIA_VERSION AS base
 
 #
 # Update, upgrade, and install python.
@@ -51,7 +51,7 @@ RUN apt-get update \
 
 # Install Python deps from CodeArtifact
 
-COPY /requirements.txt /
+COPY /requirements.txt /tmp/
 
 # These need to be set in your environment as they are needed for the image build.
 # They will not be available to the container at runtime.
@@ -72,7 +72,7 @@ ARG AWS_SESSION_TOKEN
 
 RUN aws codeartifact login --tool pip --repository seer_ds --domain seer --domain-owner 718843040700 \
     && pip uninstall --no-input --yes --no-cache-dir awscli \
-    && pip install --no-input --no-cache-dir -r requirements.txt \
+    && pip install --no-input --no-cache-dir -r /tmp/requirements.txt \
     && pip config unset global.index-url
 
 ################################################
