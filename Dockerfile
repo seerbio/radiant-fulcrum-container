@@ -130,6 +130,14 @@ COPY --from=build /usr/local/lib/python3.10 /usr/local/lib/python3.10
 # Scripts mostly do work in the current directory, so give them a dedicated space
 WORKDIR /work
 
-# Leave the default (pythia) command
+# By default we inherit the entrypoint/command of the base container,
+# which sets the entrypoint to the Pythia executable, so any command
+# is interprested as Pythia arguments. Instead, we'd like to allow
+# users to either run Scry, or an interactive environment. Here we
+# just restore a default(ish) entrypoint to permit running arbitrary
+# shell commands in the container with `docker run`.
+ENTRYPOINT ["bash", "-c"]
+
+# By default, launch an interactive shell.
 # Consider changing to a Scry command.
-#CMD ["bash", "-c", "echo 'TODO: configure test command!' && false"]
+CMD ["bash"]
