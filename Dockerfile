@@ -126,6 +126,9 @@ LABEL description="Pythia and Scry, packaged for local execution"
 # Example: copy installed Python packages.
 #
 COPY --from=build /usr/local/lib/python3.10 /usr/local/lib/python3.10
+COPY --from=build /usr/local/bin /usr/local/bin
+
+ENV PATH=$PATH:/usr/local/bin/PythiaDIACpp/
 
 # Scripts mostly do work in the current directory, so give them a dedicated space
 WORKDIR /work
