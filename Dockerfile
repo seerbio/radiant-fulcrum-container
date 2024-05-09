@@ -10,7 +10,7 @@ ARG PYTHIA_VERSION=718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-dia:
 FROM $PYTHIA_VERSION AS base
 
 #
-# Update, upgrade, and install python.
+# Update, upgrade, and install python / Java.
 #
 # We use a single RUN statement to reduce the number of image layers
 # created by docker, which reduces overall image size.
@@ -19,9 +19,10 @@ FROM $PYTHIA_VERSION AS base
 # and run `apt-get clean` to remove any downloaded package archives.
 #
 ARG PYTHON=python3.10
+ARG JAVA=default-jdk-headless
 RUN apt-get update \
     && apt-get upgrade -y \
-    && apt-get install --no-install-recommends -y $PYTHON python-is-python3 \
+    && apt-get install --no-install-recommends -y $PYTHON python-is-python3 $JAVA \
     && apt-get autoremove -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
