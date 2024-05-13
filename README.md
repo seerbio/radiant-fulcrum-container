@@ -40,7 +40,7 @@ backend = "pythia"  # Use Pythia to search files
 location = ["…", ]  # mzML path(s)
 library = "/data/library.tsv"
 fasta = "/data/uniprot.fasta"
-config = "/data/examples/example_pythia_params.exploris.toml"
+config = "/examples/example_pythia_params.toml"
 
 scoring = "svm"  # Scores to be used downstream; `svm` is a built-in set of defaults
 

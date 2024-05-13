@@ -1,0 +1,31 @@
+workflow = "v0"  # Use the basic built-in workflow
+
+
+# Search settings
+[search]
+backend = "pythia"  # Use Pythia to search files
+
+location = ["…", ]  # mzML path(s)
+library = "/data/library.tsv"
+fasta = "/data/uniprot.fasta"
+config = "/examples/example_pythia_params.toml"
+
+scoring = "svm"  # Scores to be used downstream; `svm` is a built-in set of defaults
+
+
+# Rescoring settings
+[airpot]
+backend = "mokapot"  # Percolator-style rescoring with Mokapot
+
+
+# FDR settings
+[cortado]
+backend = "crema"
+method = "mixmax"  # Use MixMax FDR estimates, suitable for peptide-centric search
+pep_fdr_type = "psm-only"   # Compute global PSM FDR
+
+
+# Output settings
+[output]
+backend = "write_csv"
+location = "/data/scry-output/"
