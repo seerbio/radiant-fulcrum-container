@@ -64,6 +64,8 @@ location = "/data/scry-output/"
 ```
 </details>
 
+To learn more about configuring Scry and Pythia, see [`examples/`](examples/)
+
 #### Accessing data files
 
 While many steps can access data from cloud locations by using `s3://` URIs,
