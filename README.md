@@ -37,7 +37,7 @@ workflow = "v0"  # Use the basic built-in workflow
 [search]
 backend = "pythia"  # Use Pythia to search files
 
-location = […]  # mzML path(s)
+location = ["…", ]  # mzML path(s)
 library = "/data/library.tsv"
 fasta = "/data/uniprot.fasta"
 config = "/data/examples/example_pythia_params.exploris.toml"
