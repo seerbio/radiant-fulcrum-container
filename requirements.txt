@@ -1,3 +1,5 @@
 scry-ms
 scry-pythia-search
 wheely-pythia
+airpot>=0.5.3
+cortado-ms>=0.10.1
