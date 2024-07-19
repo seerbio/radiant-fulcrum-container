@@ -18,7 +18,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Pull latest Pythia
-        run: docker pull 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-dia:latest
+        run:
+          - aws ecr get-login-password | docker login --username AWS --password-stdin 718843040700.dkr.ecr.us-west-2.amazonaws.com
+          - docker pull 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-dia:latest
 
       - name: Build and tag container image
         uses: seerbio/action-build-container@1.2.1
@@ -39,7 +41,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Pull latest Pythia
-        run: docker pull 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-dia:latest
+        run:
+          - aws ecr get-login-password | docker login --username AWS --password-stdin 718843040700.dkr.ecr.us-west-2.amazonaws.com
+          - docker pull 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-dia:latest
 
       - name: Build and tag container image
         uses: seerbio/action-build-container@1.2.1
