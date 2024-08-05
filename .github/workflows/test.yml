@@ -6,6 +6,8 @@ jobs:
     runs-on: [self-hosted, X64]
     steps:
       - uses: actions/checkout@v2
+      - name: Log in to ECR
+        run: aws ecr get-login-password | docker login --username AWS --password-stdin 718843040700.dkr.ecr.us-west-2.amazonaws.com
       - name: Pull latest Pythia
         run: docker pull 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-dia:latest
       - name: container-test
@@ -16,6 +18,8 @@ jobs:
     runs-on: [self-hosted, ARM64]
     steps:
       - uses: actions/checkout@v2
+      - name: Log in to ECR
+        run: aws ecr get-login-password | docker login --username AWS --password-stdin 718843040700.dkr.ecr.us-west-2.amazonaws.com
       - name: Pull latest Pythia
         run: docker pull 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-dia:latest
       - name: container-test
