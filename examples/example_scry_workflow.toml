@@ -1,4 +1,4 @@
-workflow = "v0"  # Use the basic built-in workflow
+workflow = "v1"  # Use the basic built-in workflow
 
 
 # Search settings
@@ -10,22 +10,57 @@ library = "/data/library.tsv"
 fasta = "/data/uniprot.fasta"
 config = "/examples/example_pythia_params.toml"
 
-scoring = "svm"  # Scores to be used downstream; `svm` is a built-in set of defaults
+scoring = "nn"  # Scores to be used downstream; `nn` is the Pythia neural net score
+#scoring = "svm"  # Scores to be used downstream; `svm` is a built-in set of defaults
 
 
 # Rescoring settings
 [airpot]
-backend = "mokapot"  # Percolator-style rescoring with Mokapot
+backend = "none"  # Skip rescoring (we will use NN score)
+#backend = "mokapot"  # Percolator-style rescoring with Mokapot
 
 
 # FDR settings
 [cortado]
 backend = "crema"
 method = "mixmax"  # Use MixMax FDR estimates, suitable for peptide-centric search
-pep_fdr_type = "psm-only"   # Compute global PSM FDR
+pep_fdr_type = "precursor-only"   # Compute precursor-level FDR; output only best match for each precursor
 
+# Use Pythia NN score
+score_column = "ClassifierScore"
+desc = true
+
+# Take quantities from Pythia results
+[peptide_quant]
+backend = "basic"
+sample_column = "filename"
+intensity_column = "TotalIntensityRaw"
+
+# Protein inference settings
+[proffer]
+qvalue_threshold = 0.01
+heuristic = "qvalue"
+
+# Protein scoring/FDR settings
+[protein_scoring]
+rollup_level = "precursor"
+assign_confidence = true
+
+[protein_scoring.confidence_kwargs]
+score_column = "min_qvalue"
+desc = true
+
+[protein_rollup]
+backend = "basic"
+qvalue_threshold = 0.01
+reduction = "max"
 
 # Output settings
 [output]
-backend = "write_csv"
-location = "/data/scry-output/"
+backend = "write_parquet"
+
+[peptide_output]
+location = "/data/scry-peptides/"
+
+[protein_output]
+location = "/data/scry-proteins/"

@@ -10,57 +10,55 @@ workflows using local compute resources.
 
 ## Usage
 
-### Basic Usage
+<details>
+<summary>Getting started</summary>
 
 To run this container you will need to first install Docker.
-You can then use the `docker run` command to run Pythia and Scry workflows.
+It's easiest to do this on Linux (for example, an EC2 instance):
 
 ```shell
-docker run --rm -it -v $PWD:/data 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry scry <arguments>
+# Ubuntu
+sudo apt install -y docker.io
 ```
+
+To download the container, you must authenticate to the AWS ECR repository:
+```shell
+aws ecr get-login-password | docker login --username AWS --password-stdin 718843040700.dkr.ecr.us-west-2.amazonaws.com
+```
+
+You can now use the `docker run` command to run Pythia and Scry workflows.
+</details>
 
 #### Scry workflows
 
+To run a Scry workflow in a container, use `docker run`:
+
+```shell
+docker run --rm -it 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry 'scry -v --toml-file /examples/example_scry_workflow.toml'
+```
+
 While it's possible to [run Pythia directly](#running-pythia-directly),
-running within a Scry workflow provides access to advanced rescoring,
-FDR estimation, and output functionality. Scry is configured with a
-simple TOML file. For example:
+running within a Scry workflow allows processing multiple files with
+rescoring, FDR estimation, and protein inference/rollup. Scry is
+configured with a simple TOML file.
 
 <details>
-<summary>Example Scry workflow TOML</summary>
+<summary>Getting started with Scry</summary>
 
-```toml
-workflow = "v0"  # Use the basic built-in workflow
+Start with an example workflow:
+```shell
+docker run --rm -it -v "$PWD:/data/" 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry 'cp /examples/example_scry_workflow.toml /data/'
+```
 
+You can then edit the `example_scry_workflow.toml` file in the current directory.
+Be sure to update the `search.location` and `ouput` `location` settings! **You will
+need to make sure files are accessed using their path in the container**; see
+[Accessing data files](#accessing-data-files) below.
 
-# Search settings
-[search]
-backend = "pythia"  # Use Pythia to search files
+To run your workflow:
 
-location = ["…", ]  # mzML path(s)
-library = "/data/library.tsv"
-fasta = "/data/uniprot.fasta"
-config = "/examples/example_pythia_params.toml"
-
-scoring = "svm"  # Scores to be used downstream; `svm` is a built-in set of defaults
-
-
-# Rescoring settings
-[airpot]
-backend = "mokapot"  # Percolator-style rescoring with Mokapot
-
-
-# FDR settings
-[cortado]
-backend = "crema"
-method = "mixmax"  # Use MixMax FDR estimates, suitable for peptide-centric search
-pep_fdr_type = "psm-only"   # Compute global PSM FDR
-
-
-# Output settings
-[output]
-backend = "write_csv"
-location = "/data/scry-output/"
+```shell
+docker run --rm -it -v "$PWD:/data/" 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry 'scry -v --toml-file /data/example_scry_workflow.toml'
 ```
 </details>
 
@@ -73,6 +71,29 @@ accessing local files requires you give the container access to local folders
 using `-v` arguments to the `docker run` command. For example, `-v $PWD:/data`
 gives the container access to your working directory by mounting it at `/data/`
 inside the container.
+
+#### Getting the latest version
+
+To download the newest version of the container from ECR, run the following commands:
+
+```shell
+aws ecr get-login-password | docker login --username AWS --password-stdin 718843040700.dkr.ecr.us-west-2.amazonaws.com
+docker pull 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry:latest
+```
+
+<details>
+<summary>Getting a specific version</summary>
+You can also download a specific [release](https://github.com/seerbio/pythia-scry-container/releases) of the container:
+
+**Note:** this is _not_ the Pythia version, but the version of this container!
+
+```shell
+docker pull 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry:0.3.0
+
+# Major/minor versions also work
+docker pull 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry:0.3
+```
+</details>
 
 ### Advanced Usage
 
