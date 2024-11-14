@@ -42,6 +42,26 @@ running within a Scry workflow allows processing multiple files with
 rescoring, FDR estimation, and protein inference/rollup. Scry is
 configured with a simple TOML file.
 
+<details>
+<summary>Getting started with Scry</summary>
+
+Start with an example workflow:
+```shell
+docker run --rm -it -v "$PWD:/data/" 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry 'cp /examples/example_scry_workflow.toml /data/'
+```
+
+You can then edit the `example_scry_workflow.toml` file in the current directory.
+Be sure to update the `search.location` and `ouput` `location` settings! **You will
+need to make sure files are accessed using their path in the container**; see
+[Accessing data files](#accessing-data-files) below.
+
+To run your workflow:
+
+```shell
+docker run --rm -it -v "$PWD:/data/" 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry 'scry -v --toml-file /data/example_scry_workflow.toml'
+```
+</details>
+
 To learn more about configuring Scry and Pythia, see [`examples/`](examples/)
 
 #### Accessing data files
