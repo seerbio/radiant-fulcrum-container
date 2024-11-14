@@ -1,4 +1,4 @@
-scry-ms>=0.8.7
+scry-ms>=1.0.0
 scry-pythia-search
 wheely-pythia>=0.10.0
 airpot>=0.7.0
