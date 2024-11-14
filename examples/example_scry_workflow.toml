@@ -8,7 +8,7 @@ backend = "pythia"  # Use Pythia to search files
 location = ["…", ]  # mzML path(s)
 library = "/data/library.tsv"
 fasta = "/data/uniprot.fasta"
-config = "/examples/example_pythia_params.toml"
+config = "/examples/example_pythia_params.pythiaConfig"
 
 scoring = "nn"  # Scores to be used downstream; `nn` is the Pythia neural net score
 #scoring = "svm"  # Scores to be used downstream; `svm` is a built-in set of defaults
