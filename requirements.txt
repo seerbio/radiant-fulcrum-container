@@ -3,3 +3,4 @@ scry-pythia-search
 wheely-pythia>=0.10.0
 airpot>=0.7.0
 cortado-ms>=0.10.1
+proffer>=0.3.1
