@@ -1,5 +1,5 @@
 scry-ms>=1.0.0
-scry-pythia-search
+scry-pythia-search>=0.0.3
 wheely-pythia>=0.10.0
 airpot>=0.7.0
 cortado-ms>=0.10.1
