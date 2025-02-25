@@ -12,7 +12,8 @@ jobs:
         run: docker pull 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-dia:latest
       - name: container-test
         run: ./test-container.sh
-      - run: docker build -t seer/pythia-scry:${{ github.sha }}_x86_64 ./DIA-NN-container
+      - run: docker build -t seer/pythia-scry:${{ github.sha }}_x86_64 .
+        working-directory: ./DIA-NN-container
       - name: trivy
         uses: aquasecurity/trivy-action@0.28.0
         with:
@@ -36,7 +37,8 @@ jobs:
         run: docker pull 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-dia:latest
       - name: container-test
         run: ./test-container.sh
-      - run: docker build -t seer/pythia-scry:${{ github.sha }}_aarch64 ./DIA-NN-container
+      - run: docker build -t seer/pythia-scry:${{ github.sha }}_aarch64 .
+        working-directory: ./DIA-NN-container
       - name: trivy
         uses: aquasecurity/trivy-action@0.28.0
         with:
