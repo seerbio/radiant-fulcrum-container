@@ -4,20 +4,21 @@ workflow = "mbr"  # Use the built-in MBR workflow
 # Library creation settings
 [library.search]
 backend = "pythia"  # Use Pythia to search files
-
-location = ["…", ]  # mzML path(s)
 library = "/data/library.tsv"
 fasta = "/data/uniprot.fasta"
 config = "/examples/example_pythia_params.pythiaConfig"
 
+# mzML path(s)
+location = ["…", ] 
+
 scoring = "nn"  # Scores to be used downstream; `nn` is the Pythia neural net score
 #scoring = "svm"  # Scores to be used downstream; `svm` is a built-in set of defaults
 
+# If true, use appropriately-named result files (if they exist)
+#reuse_existing = false
+
 # Location of Pythia executable
 #executable = "/usr/local/bin/PythiaDIACpp/PythiaDIA"
-
-# Use appropriately-named result files if the exist already
-#reuse_existing = false
 
 [library.airpot]
 backend = "none"
@@ -30,23 +31,38 @@ score_column = "ClassifierScore"
 desc = true
 
 [library.output]
+location = "/data/lib-mbr.tsv"
+mode = "overwrite"
+
+qval_thresh = 0.01
+include_decoys = false
+
 spectra_backend = "pythia"
 peptide_normalizer = false
-location = "/data/lib-mbr.tsv"
 
 
 # Search settings
 [search]
 backend = "pythia"  # Use Pythia to search files
-
-location = ["…", ]  # mzML path(s)
 fasta = "/data/uniprot.fasta"
 config = "/examples/example_pythia_params.pythiaConfig"
+
+# Note: MUST not specify `library` here! It will be computed by the workflow.
+
+# mzML path(s)
+location = ["/raw/EXP24078_2024EU0002rX1_A.raw.mzML", "/raw/EXP24078_2024EU0002rX2_A.raw.mzML", "/raw/EXP24078_2024EU0002rX3_A.raw.mzML"]
 
 scoring = "nn"  # Scores to be used downstream; `nn` is the Pythia neural net score
 #scoring = "svm"  # Scores to be used downstream; `svm` is a built-in set of defaults
 
-use_library_location = true  # required for MBR with `search.backend = "pythia"`
+# If true, use appropriately-named result files (if they exist)
+reuse_existing = false
+
+# Configure `library` -- required for MBR with `search.backend = "pythia"`
+use_library_location = true
+
+# Location of Pythia executable
+#executable = "/usr/local/bin/PythiaDIACpp/PythiaDIA"
 
 
 # Rescoring settings
@@ -103,6 +119,8 @@ reduction = "max"
 # Output settings
 [output]
 backend = "write_parquet"
+qval_thresh = 0.01
+include_decoys = false
 
 [peptide_output]
 location = "/data/scry-peptides/"
