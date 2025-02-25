@@ -40,7 +40,6 @@ location = "/data/lib-mbr.tsv"
 backend = "pythia"  # Use Pythia to search files
 
 location = ["…", ]  # mzML path(s)
-library = "/data/library.tsv"
 fasta = "/data/uniprot.fasta"
 config = "/examples/example_pythia_params.pythiaConfig"
 
