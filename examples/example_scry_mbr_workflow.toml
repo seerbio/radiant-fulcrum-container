@@ -1,0 +1,129 @@
+workflow = "mbr"  # Use the built-in MBR workflow
+
+
+# Library creation settings
+[library.search]
+backend = "pythia"  # Use Pythia to search files
+library = "/data/library.tsv"
+fasta = "/data/uniprot.fasta"
+config = "/examples/example_pythia_params.pythiaConfig"
+
+# mzML path(s)
+location = ["…", ] 
+
+scoring = "nn"  # Scores to be used downstream; `nn` is the Pythia neural net score
+#scoring = "svm"  # Scores to be used downstream; `svm` is a built-in set of defaults
+
+# If true, use appropriately-named result files (if they exist)
+#reuse_existing = false
+
+# Location of Pythia executable
+#executable = "/usr/local/bin/PythiaDIACpp/PythiaDIA"
+
+[library.airpot]
+backend = "none"
+
+[library.cortado]
+backend = "crema"
+method = "mixmax"
+pep_fdr_type = "precursor-only"
+score_column = "ClassifierScore"
+desc = true
+
+[library.output]
+location = "/data/lib-mbr.tsv"
+mode = "overwrite"
+
+qval_thresh = 0.01
+include_decoys = false
+
+spectra_backend = "pythia"
+peptide_normalizer = false
+
+
+# Search settings
+[search]
+backend = "pythia"  # Use Pythia to search files
+fasta = "/data/uniprot.fasta"
+config = "/examples/example_pythia_params.pythiaConfig"
+
+# Note: MUST not specify `library` here! It will be computed by the workflow.
+
+# mzML path(s)
+location = ["/raw/EXP24078_2024EU0002rX1_A.raw.mzML", "/raw/EXP24078_2024EU0002rX2_A.raw.mzML", "/raw/EXP24078_2024EU0002rX3_A.raw.mzML"]
+
+scoring = "nn"  # Scores to be used downstream; `nn` is the Pythia neural net score
+#scoring = "svm"  # Scores to be used downstream; `svm` is a built-in set of defaults
+
+# If true, use appropriately-named result files (if they exist)
+reuse_existing = false
+
+# Configure `library` -- required for MBR with `search.backend = "pythia"`
+use_library_location = true
+
+# Location of Pythia executable
+#executable = "/usr/local/bin/PythiaDIACpp/PythiaDIA"
+
+
+# Rescoring settings
+[airpot]
+backend = "none"  # Skip rescoring (we will use NN score)
+#backend = "mokapot"  # Percolator-style rescoring with Mokapot
+
+
+# FDR settings
+[cortado]
+backend = "crema"
+method = "mixmax"  # Use MixMax FDR estimates, suitable for peptide-centric search
+
+# In the second pass, only estimate PSM FDRs.
+# After this step, the MBR workflow will appropriately
+# estimate precursor FDR and produce a combined FDR
+# used for further filtering.
+pep_fdr_type = "psm-only"
+
+# Use Pythia NN score
+score_column = "ClassifierScore"
+desc = true
+
+
+# Take quantities from Pythia results
+[peptide_quant]
+backend = "basic"
+sample_column = "filename"
+intensity_column = "TotalIntensityRaw"
+
+
+# Protein inference settings
+[proffer]
+qvalue_threshold = 0.01
+heuristic = "qvalue"
+
+
+# Protein scoring/FDR settings
+[protein_scoring]
+rollup_level = "precursor"
+assign_confidence = true
+
+[protein_scoring.confidence_kwargs]
+score_column = "nsp"
+desc = false
+
+# Protein quant rollup settings
+[protein_rollup]
+backend = "basic"
+qvalue_threshold = 0.01
+reduction = "max"
+
+
+# Output settings
+[output]
+backend = "write_parquet"
+qval_thresh = 0.01
+include_decoys = false
+
+[peptide_output]
+location = "/data/scry-peptides/"
+
+[protein_output]
+location = "/data/scry-proteins/"
