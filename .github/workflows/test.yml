@@ -3,9 +3,9 @@ on: [pull_request]
 jobs:
   test-x86_64:
     name: Test Container (x86_64)
-    runs-on: [self-hosted, X64]
+    runs-on: [self-hosted, aws-master, X64]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Log in to ECR
         run: aws ecr get-login-password | docker login --username AWS --password-stdin 718843040700.dkr.ecr.us-west-2.amazonaws.com
       - name: Pull latest Pythia
@@ -27,9 +27,9 @@ jobs:
 
   test-aarch64:
     name: Test Container (aarch64)
-    runs-on: [self-hosted, ARM64]
+    runs-on: [self-hosted, aws-master, ARM64]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Log in to ECR
         run: aws ecr get-login-password | docker login --username AWS --password-stdin 718843040700.dkr.ecr.us-west-2.amazonaws.com
       - name: Pull latest Pythia
@@ -51,9 +51,9 @@ jobs:
 
   lint-container:
     name: Lint Container
-    runs-on: ubuntu-20.04 # x86_64
+    runs-on: ubuntu-24.04 # x86_64
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: hadolint
         uses: reviewdog/action-hadolint@v1
         with:
@@ -61,9 +61,9 @@ jobs:
 
   lint-actions:
     name: Lint Actions Config
-    runs-on: ubuntu-20.04 # x86_64
+    runs-on: ubuntu-24.04 # x86_64
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: actionlint
         uses: reviewdog/action-actionlint@v1
         with:
@@ -71,9 +71,9 @@ jobs:
 
   lint-scripts:
     name: Lint Shell Scripts
-    runs-on: ubuntu-20.04 # x86_64
+    runs-on: ubuntu-24.04 # x86_64
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - uses: reviewdog/action-shellcheck@v1
         with:
           reporter: github-pr-check # Default
