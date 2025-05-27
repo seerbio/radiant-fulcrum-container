@@ -4,3 +4,6 @@ wheely-pythia>=0.10.0
 airpot>=0.7.0
 cortado-ms>=0.14.0
 proffer>=0.3.2
+
+# Pin version with updated avro dep -- addresses critical vuln identified in scan
+pyspark>=3.5.5
