@@ -1,9 +1,9 @@
-scry-ms>=1.1.0
+scry-ms>=1.6.4
 scry-pythia-search>=0.0.4
 wheely-pythia>=0.12.0
 airpot>=0.7.0
 cortado-ms>=0.14.0
-proffer>=0.3.2
+proffer>=0.4.4
 
 # Pin version with updated avro dep -- addresses critical vuln identified in scan
 pyspark>=3.5.5
