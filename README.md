@@ -10,8 +10,7 @@ workflows using local compute resources.
 
 ## Usage
 
-<details>
-<summary>Getting started</summary>
+### Getting started
 
 To run this container you will need to first install Docker.
 It's easiest to do this on Linux (for example, an EC2 instance):
@@ -27,9 +26,62 @@ aws ecr get-login-password | docker login --username AWS --password-stdin 718843
 ```
 
 You can now use the `docker run` command to run Pythia and Scry workflows.
+
+<details>
+<summary>Getting the latest container version</summary>
+
+To download the newest version of the container from ECR, run the following commands:
+
+```shell
+aws ecr get-login-password | docker login --username AWS --password-stdin 718843040700.dkr.ecr.us-west-2.amazonaws.com
+docker pull 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry:latest
+```
 </details>
 
-#### Scry workflows
+<details>
+<summary>Getting a specific container version</summary>
+You can also download a specific [release](https://github.com/seerbio/pythia-scry-container/releases) of the container:
+
+**Note:** this is _not_ the Pythia version, but the version of this container!
+
+```shell
+docker pull 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry:0.3.0
+
+# Major/minor versions also work
+docker pull 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry:0.3
+```
+</details>
+
+#### Accessing data files
+
+While many steps can access data from cloud locations by using `s3://` URIs,
+accessing local files requires you give the container access to local folders
+using `-v` arguments to the `docker run` command. For example, `-v $PWD:/data`
+gives the container access to your working directory by mounting it at `/data/`
+inside the container.
+
+### Running the Pythia workflow
+
+To run the default Pythia workflow on your data files, use the following command:
+
+```shell
+docker run --rm -it -v "$PWD:/data/" 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry 'pythia_scry -v --libfree --library /data/library.tsv --fasta /data/database.fasta --results-dir /data/pythia_output/ /data/*.mzML'
+```
+
+This will run the library-free workflow on all `mzML` files in the current directory, using `library.tsv` and
+`database.fasta` from the current directory, and writing results to the `pythia_output/` folder.
+
+For a full list of supported parameters, see documentation for the [Pythia workflow](https://github.com/seerbio/scry-pythia-workflow).
+
+You can also get help by running:
+```shell
+docker run --rm -it -v "$PWD:/data/" 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry 'pythia_scry --help'
+```
+
+### Advanced Usage
+
+If the default Pythia workflow doesn't support your use case, you can
+run a fully customized Scry workflow by generating your own TOML configuration file.
 
 To run a Scry workflow in a container, use `docker run`:
 
@@ -64,39 +116,6 @@ docker run --rm -it -v "$PWD:/data/" 718843040700.dkr.ecr.us-west-2.amazonaws.co
 
 To learn more about configuring Scry and Pythia, see [`examples/`](examples/)
 
-#### Accessing data files
-
-While many steps can access data from cloud locations by using `s3://` URIs,
-accessing local files requires you give the container access to local folders
-using `-v` arguments to the `docker run` command. For example, `-v $PWD:/data`
-gives the container access to your working directory by mounting it at `/data/`
-inside the container.
-
-#### Getting the latest version
-
-To download the newest version of the container from ECR, run the following commands:
-
-```shell
-aws ecr get-login-password | docker login --username AWS --password-stdin 718843040700.dkr.ecr.us-west-2.amazonaws.com
-docker pull 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry:latest
-```
-
-<details>
-<summary>Getting a specific version</summary>
-You can also download a specific [release](https://github.com/seerbio/pythia-scry-container/releases) of the container:
-
-**Note:** this is _not_ the Pythia version, but the version of this container!
-
-```shell
-docker pull 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry:0.3.0
-
-# Major/minor versions also work
-docker pull 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry:0.3
-```
-</details>
-
-### Advanced Usage
-
 To launch an interactive environment with Pythia and Scry installed, simply
 run the container without arguments:
 
@@ -105,10 +124,10 @@ $ docker run --rm -it -v $PWD:/data 718843040700.dkr.ecr.us-west-2.amazonaws.com
 # _
 ```
 
+#### Running Pythia directly
+
 You can also run any shell command inside the container directly from the Docker command.
 For example:
-
-#### Running Pythia directly
 
 ```shell
 $ docker run --rm -it -v $PWD:/data 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry PythiaDIA --help
