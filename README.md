@@ -65,8 +65,12 @@ inside the container.
 To run the default Pythia workflow on your data files, use the following command:
 
 ```shell
-docker run --rm -it -v "$PWD:/data/" 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry 'pythia_scry -v --libfree --library /data/library.tsv --fasta /data/database.fasta --results-dir /data/pythia_output/ /data/*.mzML'
+docker run --rm -it -v "$PWD:/data/" 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry sh -c 'pythia_scry -v --libfree --library /data/library.tsv --fasta /data/database.fasta --results-dir /data/pythia_output/ /data/*.mzML'
 ```
+
+**Note:** When using wildcards (like `*.mzML`), you must wrap the command with `sh -c '...'`
+to enable shell expansion. For commands without wildcards, you can pass arguments directly:
+`docker run ... pythia_scry --help`
 
 This will run the library-free workflow on all `mzML` files in the current directory, using `library.tsv` and
 `database.fasta` from the current directory, and writing results to the `pythia_output/` folder.
@@ -75,7 +79,7 @@ For a full list of supported parameters, see documentation for the [Pythia workf
 
 You can also get help by running:
 ```shell
-docker run --rm -it -v "$PWD:/data/" 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry 'pythia_scry --help'
+docker run --rm -it 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry pythia_scry --help
 ```
 
 ### Advanced Usage
@@ -86,7 +90,7 @@ run a fully customized Scry workflow by generating your own TOML configuration f
 To run a Scry workflow in a container, use `docker run`:
 
 ```shell
-docker run --rm -it 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry 'scry -v --toml-file /examples/example_scry_workflow.toml'
+docker run --rm -it 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry scry -v --toml-file /examples/example_scry_workflow.toml
 ```
 
 While it's possible to [run Pythia directly](#running-pythia-directly),
@@ -99,7 +103,7 @@ configured with a simple TOML file.
 
 Start with an example workflow:
 ```shell
-docker run --rm -it -v "$PWD:/data/" 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry 'cp /examples/example_scry_workflow.toml /data/'
+docker run --rm -it -v "$PWD:/data/" 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry cp /examples/example_scry_workflow.toml /data/
 ```
 
 You can then edit the `example_scry_workflow.toml` file in the current directory.
@@ -110,23 +114,23 @@ need to make sure files are accessed using their path in the container**; see
 To run your workflow:
 
 ```shell
-docker run --rm -it -v "$PWD:/data/" 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry 'scry -v --toml-file /data/example_scry_workflow.toml'
+docker run --rm -it -v "$PWD:/data/" 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry scry -v --toml-file /data/example_scry_workflow.toml
 ```
 </details>
 
 To learn more about configuring Scry and Pythia, see [`examples/`](examples/)
 
-To launch an interactive environment with Pythia and Scry installed, simply
-run the container without arguments:
+To launch an interactive environment with Pythia and Scry installed,
+run the container with `bash`:
 
 ```shell
-$ docker run --rm -it -v $PWD:/data 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry
+$ docker run --rm -it -v $PWD:/data 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry bash
 # _
 ```
 
 #### Running Pythia directly
 
-You can also run any shell command inside the container directly from the Docker command.
+You can run any executable inside the container directly from the Docker command.
 For example:
 
 ```shell

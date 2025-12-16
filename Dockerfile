@@ -143,7 +143,7 @@ WORKDIR /work
 # users to either run Scry, or an interactive environment. Here we
 # just restore a default(ish) entrypoint to permit running arbitrary
 # shell commands in the container with `docker run`.
-ENTRYPOINT ["bash", "-c"]
+ENTRYPOINT []
 
 # By default, launch an interactive shell.
 # Consider changing to a Scry command.
