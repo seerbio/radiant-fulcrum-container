@@ -1,9 +1,9 @@
-scry-ms>=1.6.4
+scry-ms>=1.8.0
 scry-pythia-search>=0.0.4
-scry-pythia-workflow>=0.1.0
-wheely-pythia>=0.12.0
+scry-pythia-workflow>=0.2.0
+wheely-pythia>=0.13.1
 airpot>=0.7.0
-cortado-ms>=0.14.0
+cortado-ms>=0.16.0
 proffer>=0.4.4
 
 # Pin version with updated avro dep -- addresses critical vuln identified in scan
