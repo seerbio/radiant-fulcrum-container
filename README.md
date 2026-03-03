@@ -1,11 +1,11 @@
-# Pythia + Scry Docker image
+# Radiant DIA + Fulcrum Pipeline Docker image
 
-Pythia is a peptide-centric search engine for bottom-up DIA proteomics.
+Radiant DIA™ is a peptide-centric search engine for bottom-up DIA proteomics.
 Alone, it generates only basic IDs and statistics, but using it within
-the larger Scry ecosystem allows executing full-fledged processing
+the larger Fulcrum Pipeline™ ecosystem allows executing full-fledged processing
 workflows with various rescoring, FDR, and output options.
 
-This Docker container image permits easily executing Pythia + Scry
+This Docker container image permits easily executing Radiant + Fulcrum
 workflows using local compute resources.
 
 ## Usage
@@ -25,7 +25,7 @@ To download the container, you must authenticate to the AWS ECR repository:
 aws ecr get-login-password | docker login --username AWS --password-stdin 718843040700.dkr.ecr.us-west-2.amazonaws.com
 ```
 
-You can now use the `docker run` command to run Pythia and Scry workflows.
+You can now use the `docker run` command to run Radiant and Fulcrum workflows.
 
 <details>
 <summary>Getting the latest container version</summary>
@@ -34,21 +34,21 @@ To download the newest version of the container from ECR, run the following comm
 
 ```shell
 aws ecr get-login-password | docker login --username AWS --password-stdin 718843040700.dkr.ecr.us-west-2.amazonaws.com
-docker pull 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry:latest
+docker pull 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/radiant-fulcrum:latest
 ```
 </details>
 
 <details>
 <summary>Getting a specific container version</summary>
-You can also download a specific [release](https://github.com/seerbio/pythia-scry-container/releases) of the container:
+You can also download a specific [release](https://github.com/seerbio/radiant-fulcrum-container/releases) of the container:
 
-**Note:** this is _not_ the Pythia version, but the version of this container!
+**Note:** this is _not_ the Radiant DIA version, but the version of this container!
 
 ```shell
-docker pull 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry:0.3.0
+docker pull 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/radiant-fulcrum:0.3.0
 
 # Major/minor versions also work
-docker pull 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry:0.3
+docker pull 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/radiant-fulcrum:0.3
 ```
 </details>
 
@@ -60,53 +60,53 @@ using `-v` arguments to the `docker run` command. For example, `-v $PWD:/data`
 gives the container access to your working directory by mounting it at `/data/`
 inside the container.
 
-### Running the Pythia workflow
+### Running the workflow
 
-To run the default Pythia workflow on your data files, use the following command:
+To run the default Radiant workflow on your data files, use the following command:
 
 ```shell
-docker run --rm -it -v "$PWD:/data/" 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry sh -c 'pythia_scry -v --libfree --library /data/library.tsv --fasta /data/database.fasta --results-dir /data/pythia_output/ /data/*.mzML'
+docker run --rm -it -v "$PWD:/data/" 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/radiant-fulcrum sh -c 'radiant_fulcrum -v --libfree --library /data/library.tsv --fasta /data/database.fasta --results-dir /data/radiant-output/ /data/*.mzML'
 ```
 
 **Note:** When using wildcards (like `*.mzML`), you must wrap the command with `sh -c '...'`
 to enable shell expansion. For commands without wildcards, you can pass arguments directly:
-`docker run ... pythia_scry --help`
+`docker run ... radiant_fulcrum --help`
 
 This will run the library-free workflow on all `mzML` files in the current directory, using `library.tsv` and
-`database.fasta` from the current directory, and writing results to the `pythia_output/` folder.
+`database.fasta` from the current directory, and writing results to the `radiant-output/` folder.
 
-For a full list of supported parameters, see documentation for the [Pythia workflow](https://github.com/seerbio/scry-pythia-workflow).
+For a full list of supported parameters, see documentation for the [Radiant workflow](https://github.com/seerbio/radiant-fulcrum-workflow).
 
 You can also get help by running:
 ```shell
-docker run --rm -it 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry pythia_scry --help
+docker run --rm -it 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/radiant_fulcrum radiant_fulcrum --help
 ```
 
 ### Advanced Usage
 
-If the default Pythia workflow doesn't support your use case, you can
-run a fully customized Scry workflow by generating your own TOML configuration file.
+If the default workflow doesn't support your use case, you can run a fully customized Fulcrum workflow by generating
+your own TOML configuration file.
 
-To run a Scry workflow in a container, use `docker run`:
+To run a Fulcrum workflow in a container, use `docker run`:
 
 ```shell
-docker run --rm -it 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry scry -v --toml-file /examples/example_scry_workflow.toml
+docker run --rm -it 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/radiant-fulcrum fulcrum -v --toml-file /examples/example_fulcrum_workflow.toml
 ```
 
-While it's possible to [run Pythia directly](#running-pythia-directly),
-running within a Scry workflow allows processing multiple files with
-rescoring, FDR estimation, and protein inference/rollup. Scry is
+While it's possible to [run Radiant directly](#running-radiant-dia-directly),
+running within a Fulcrum workflow allows processing multiple files with
+rescoring, FDR estimation, and protein inference/rollup. Fulcrum is
 configured with a simple TOML file.
 
 <details>
-<summary>Getting started with Scry</summary>
+<summary>Getting started with Fulcrum</summary>
 
 Start with an example workflow:
 ```shell
-docker run --rm -it -v "$PWD:/data/" 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry cp /examples/example_scry_workflow.toml /data/
+docker run --rm -it -v "$PWD:/data/" 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/radiant-fulcrum cp /examples/example_fulcrum_workflow.toml /data/
 ```
 
-You can then edit the `example_scry_workflow.toml` file in the current directory.
+You can then edit the `example_fulcrum_workflow.toml` file in the current directory.
 Be sure to update the `search.location` and `ouput` `location` settings! **You will
 need to make sure files are accessed using their path in the container**; see
 [Accessing data files](#accessing-data-files) below.
@@ -114,29 +114,29 @@ need to make sure files are accessed using their path in the container**; see
 To run your workflow:
 
 ```shell
-docker run --rm -it -v "$PWD:/data/" 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry scry -v --toml-file /data/example_scry_workflow.toml
+docker run --rm -it -v "$PWD:/data/" 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/radiant-fulcrum fulcrum -v --toml-file /data/example_fulcrum_workflow.toml
 ```
 </details>
 
-To learn more about configuring Scry and Pythia, see [`examples/`](examples/)
+To learn more about configuring Radiant and Fulcrum, see [`examples/`](examples/)
 
-To launch an interactive environment with Pythia and Scry installed,
+To launch an interactive environment with Radiant and Fulcrum installed,
 run the container with `bash`:
 
 ```shell
-$ docker run --rm -it -v $PWD:/data 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry bash
+$ docker run --rm -it -v $PWD:/data 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/radiant-fulcrum bash
 # _
 ```
 
-#### Running Pythia directly
+#### Running Radiant DIA directly
 
 You can run any executable inside the container directly from the Docker command.
 For example:
 
 ```shell
-$ docker run --rm -it -v $PWD:/data 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-scry PythiaDIA --help
+$ docker run --rm -it -v $PWD:/data 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/radiant-fulcrum RadiantDIA --help
 "Expected 4 arguments.  Received 2"
-Usage: /usr/local/bin/PythiaDIACpp/PythiaDIA [options] fraglibff-path fasta-path pythia-path data-file-path
+Usage: /usr/local/bin/radiant/RadiantDIA [options] fraglibff-path fasta-path radiant-path data-file-path
 
 Options:
   -h, --help  Displays help on commandline options.
@@ -146,7 +146,7 @@ Arguments:
   fraglibff-p *.fragLibFF file
   ath
   fasta-path  *.fasta file
-  pythia-path *.pythia file
+  radiant-path *.radiantConfig file
   data-file-p data directory path
   ath
 ```

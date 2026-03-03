@@ -19,13 +19,13 @@ jobs:
 
       - name: Log in to ECR
         run: aws ecr get-login-password | docker login --username AWS --password-stdin 718843040700.dkr.ecr.us-west-2.amazonaws.com
-      - name: Pull latest Pythia
-        run: docker pull 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-dia:latest
+      - name: Pull latest Radiant
+        run: docker pull 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/radiant-dia:latest
 
       - name: Build and tag container image
         uses: seerbio/action-build-container@1.2.1
         with:
-          container: seer/pythia-scry
+          container: seer/radiant-fulcrum
           container_tag: x86_64-build-${{ github.run_number }}
           repository: 718843040700.dkr.ecr.us-west-2.amazonaws.com
           test_script: ./test-container.sh
@@ -42,13 +42,13 @@ jobs:
 
       - name: Log in to ECR
         run: aws ecr get-login-password | docker login --username AWS --password-stdin 718843040700.dkr.ecr.us-west-2.amazonaws.com
-      - name: Pull latest Pythia
-        run: docker pull 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-dia:latest
+      - name: Pull latest Radiant
+        run: docker pull 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/radiant-fulcrum:latest
 
       - name: Build and tag container image
         uses: seerbio/action-build-container@1.2.1
         with:
-          container: seer/pythia-scry
+          container: seer/radiant-fulcrum
           container_tag: aarch64-build-${{ github.run_number }}
           repository: 718843040700.dkr.ecr.us-west-2.amazonaws.com
           test_script: ./test-container.sh

@@ -5,8 +5,8 @@
 1. Clone the repository
 
    ```shell
-   git clone git@github.com:seerbio/scry-pythia-container.git
-   cd scry-pythia-container
+   git clone git@github.com:seerbio/radiant-fulcrum-container.git
+   cd radiant-fulcrum-container
    ```
 
    Alternatively, create a fork through GitHub and clone that repository.

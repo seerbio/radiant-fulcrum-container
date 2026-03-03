@@ -15,7 +15,7 @@ jobs:
       - name: Tag x86 container image
         uses: seerbio/action-tag-container@2.1.0
         with:
-          container: seer/pythia-scry
+          container: seer/radiant-fulcrum
           repository: 718843040700.dkr.ecr.us-west-2.amazonaws.com
           build_tag_prefix: x86_64-build-
           tag_suffix: -x86_64
@@ -31,7 +31,7 @@ jobs:
       - name: Tag ARM container image
         uses: seerbio/action-tag-container@2.1.0
         with:
-          container: seer/pythia-scry
+          container: seer/radiant-fulcrum
           repository: 718843040700.dkr.ecr.us-west-2.amazonaws.com
           build_tag_prefix: aarch64-build-
           tag_suffix: -aarch64
@@ -45,7 +45,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Publish Docker Manifest
         env:
-          CONTAINER: seer/pythia-scry
+          CONTAINER: seer/radiant-fulcrum
           REPOSITORY: 718843040700.dkr.ecr.us-west-2.amazonaws.com
           ADDL_TAGS: latest
         run: ./deploy_docker_manifest.sh "${ADDL_TAGS}"
