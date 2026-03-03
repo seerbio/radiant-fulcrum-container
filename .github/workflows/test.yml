@@ -14,7 +14,7 @@ jobs:
         run: ./test-container.sh
       - run: docker build -t seer/radiant-fulcrum:${{ github.sha }}_x86_64 .
       - name: trivy
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@0.34.2
         with:
           image-ref: seer/radiant-fulcrum:${{ github.sha }}_x86_64
           scanners: vuln,secret
@@ -38,7 +38,7 @@ jobs:
         run: ./test-container.sh
       - run: docker build -t seer/radiant-fulcrum:${{ github.sha }}_aarch64 .
       - name: trivy
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@0.34.2
         with:
           image-ref: seer/radiant-fulcrum:${{ github.sha }}_aarch64
           scanners: vuln,secret
