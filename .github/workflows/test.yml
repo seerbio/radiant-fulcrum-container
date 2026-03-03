@@ -33,7 +33,7 @@ jobs:
       - name: Log in to ECR
         run: aws ecr get-login-password | docker login --username AWS --password-stdin 718843040700.dkr.ecr.us-west-2.amazonaws.com
       - name: Pull latest Radiant
-        run: docker pull 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/radiant-fulcrum:latest
+        run: docker pull 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/radiant-dia:latest
       - name: container-test
         run: ./test-container.sh
       - run: docker build -t seer/radiant-fulcrum:${{ github.sha }}_aarch64 .
