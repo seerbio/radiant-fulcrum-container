@@ -3,22 +3,22 @@ workflow = "mbr"  # Use the built-in MBR workflow
 
 # Library creation settings
 [library.search]
-backend = "pythia"  # Use Pythia to search files
+backend = "radiant"  # Use Radiant to search files
 library = "/data/library.tsv"
 fasta = "/data/uniprot.fasta"
-config = "/examples/example_pythia_params.pythiaConfig"
+config = "/examples/example_radiant_params.radiantConfig"
 
 # mzML path(s)
 location = ["…", ] 
 
-scoring = "nn"  # Scores to be used downstream; `nn` is the Pythia neural net score
+scoring = "nn"  # Scores to be used downstream; `nn` is the Radiant neural net score
 #scoring = "svm"  # Scores to be used downstream; `svm` is a built-in set of defaults
 
 # If true, use appropriately-named result files (if they exist)
 #reuse_existing = false
 
-# Location of Pythia executable
-#executable = "/usr/local/bin/PythiaDIACpp/PythiaDIA"
+# Location of Radiant executable
+#executable = "/usr/local/bin/radiant/RadiantDIA"
 
 [library.airpot]
 backend = "none"
@@ -37,32 +37,32 @@ mode = "overwrite"
 qval_thresh = 0.01
 include_decoys = false
 
-spectra_backend = "pythia"
+spectra_backend = "radiant"
 peptide_normalizer = false
 
 
 # Search settings
 [search]
-backend = "pythia"  # Use Pythia to search files
+backend = "radiant"  # Use Radiant to search files
 fasta = "/data/uniprot.fasta"
-config = "/examples/example_pythia_params.pythiaConfig"
+config = "/examples/example_radiant_params.radiantConfig"
 
 # Note: MUST not specify `library` here! It will be computed by the workflow.
 
 # mzML path(s)
 location = ["/raw/EXP24078_2024EU0002rX1_A.raw.mzML", "/raw/EXP24078_2024EU0002rX2_A.raw.mzML", "/raw/EXP24078_2024EU0002rX3_A.raw.mzML"]
 
-scoring = "nn"  # Scores to be used downstream; `nn` is the Pythia neural net score
+scoring = "nn"  # Scores to be used downstream; `nn` is the Radiant neural net score
 #scoring = "svm"  # Scores to be used downstream; `svm` is a built-in set of defaults
 
 # If true, use appropriately-named result files (if they exist)
 reuse_existing = false
 
-# Configure `library` -- required for MBR with `search.backend = "pythia"`
+# Configure `library` -- required for MBR with `search.backend = "radiant"`
 use_library_location = true
 
-# Location of Pythia executable
-#executable = "/usr/local/bin/PythiaDIACpp/PythiaDIA"
+# Location of Radiant executable
+#executable = "/usr/local/bin/radiant/RadiantDIA"
 
 
 # Rescoring settings
@@ -82,12 +82,12 @@ method = "mixmax"  # Use MixMax FDR estimates, suitable for peptide-centric sear
 # used for further filtering.
 pep_fdr_type = "psm-only"
 
-# Use Pythia NN score
+# Use Radiant NN score
 score_column = "ClassifierScore"
 desc = true
 
 
-# Take quantities from Pythia results
+# Take quantities from Radiant results
 [peptide_quant]
 backend = "basic"
 sample_column = "filename"
@@ -123,7 +123,7 @@ qval_thresh = 0.01
 include_decoys = false
 
 [peptide_output]
-location = "/data/scry-peptides/"
+location = "/data/fulcrum-peptides/"
 
 [protein_output]
-location = "/data/scry-proteins/"
+location = "/data/fulcrum-proteins/"

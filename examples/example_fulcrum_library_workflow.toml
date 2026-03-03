@@ -3,14 +3,14 @@ workflow = "v0"  # Use the basic built-in workflow
 
 # Search settings
 [search]
-backend = "pythia"  # Use Pythia to search files
+backend = "radiant"  # Use Radiant to search files
 
 location = ["…", ]  # mzML path(s)
 library = "/data/library.tsv"
 fasta = "/data/uniprot.fasta"
-config = "/examples/example_pythia_params.pythiaConfig"
+config = "/examples/example_radiant_params.radiantConfig"
 
-scoring = "nn"  # Scores to be used downstream; `nn` is the Pythia neural net score
+scoring = "nn"  # Scores to be used downstream; `nn` is the Radiant neural net score
 #scoring = "svm"  # Scores to be used downstream; `svm` is a built-in set of defaults
 
 
@@ -26,7 +26,7 @@ backend = "crema"
 method = "mixmax"  # Use MixMax FDR estimates, suitable for peptide-centric search
 pep_fdr_type = "precursor-only"   # Compute precursor-level FDR; output only best match for each precursor
 
-# Use Pythia NN score
+# Use Radiant NN score
 score_column = "ClassifierScore"
 desc = true
 
@@ -34,9 +34,9 @@ desc = true
 # Output settings
 [output]
 backend = "write_library"  # Write a library as DIA-NN-compatible TSV
-spectra_backend="pythia"
+spectra_backend="radiant"
 
-location = "/data/scry-output/scry-library.tsv"
+location = "/data/fulcrum-output/fulcrum-library.tsv"
 
 qval_thresh = 0.01
 include_decoys = false

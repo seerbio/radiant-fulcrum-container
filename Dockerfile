@@ -6,8 +6,8 @@
 # that are shared between the build stage and final image.
 #
 ################################################
-ARG PYTHIA_VERSION=718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/pythia-dia:latest
-FROM $PYTHIA_VERSION AS base
+ARG RADIANT_VERSION=718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/radiant-dia:latest
+FROM $RADIANT_VERSION AS base
 
 #
 # Update, upgrade, and install python / Java.
@@ -120,7 +120,7 @@ FROM base AS app
 # Set labels
 #
 LABEL author="Seer, Inc."
-LABEL description="Pythia and Scry, packaged for local execution"
+LABEL description="Radiant DIA and Fulcrum Pipeline, packaged for local execution"
 
 #
 # TODO: Copy dependencies from the build stage
@@ -132,19 +132,19 @@ COPY README.md /
 COPY Dockerfile /
 COPY /examples/ /examples/
 
-ENV PATH=$PATH:/usr/local/bin/PythiaDIACpp/
+ENV PATH=$PATH:/usr/local/bin/radiant/
 
 # Scripts mostly do work in the current directory, so give them a dedicated space
 WORKDIR /work
 
 # By default we inherit the entrypoint/command of the base container,
-# which sets the entrypoint to the Pythia executable, so any command
-# is interprested as Pythia arguments. Instead, we'd like to allow
-# users to either run Scry, or an interactive environment. Here we
+# which sets the entrypoint to the Radiant executable, so any command
+# is interprested as Radiant arguments. Instead, we'd like to allow
+# users to either run Fulcrum, or an interactive environment. Here we
 # just restore a default(ish) entrypoint to permit running arbitrary
 # shell commands in the container with `docker run`.
 ENTRYPOINT []
 
 # By default, launch an interactive shell.
-# Consider changing to a Scry command.
+# Consider changing to a Fulcrum command.
 CMD ["bash"]

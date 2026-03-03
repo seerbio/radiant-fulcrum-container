@@ -3,14 +3,14 @@ workflow = "v1"  # Use the basic built-in workflow
 
 # Search settings
 [search]
-backend = "pythia"  # Use Pythia to search files
+backend = "radiant"  # Use Radiant to search files
 
 location = ["…", ]  # mzML path(s)
 library = "/data/library.tsv"
 fasta = "/data/uniprot.fasta"
-config = "/examples/example_pythia_params.pythiaConfig"
+config = "/examples/example_radiant_params.radiantConfig"
 
-scoring = "nn"  # Scores to be used downstream; `nn` is the Pythia neural net score
+scoring = "nn"  # Scores to be used downstream; `nn` is the Radiant neural net score
 #scoring = "svm"  # Scores to be used downstream; `svm` is a built-in set of defaults
 
 
@@ -26,11 +26,11 @@ backend = "crema"
 method = "mixmax"  # Use MixMax FDR estimates, suitable for peptide-centric search
 pep_fdr_type = "precursor-only"   # Compute precursor-level FDR; output only best match for each precursor
 
-# Use Pythia NN score
+# Use Radiant NN score
 score_column = "ClassifierScore"
 desc = true
 
-# Take quantities from Pythia results
+# Take quantities from Radiant results
 [peptide_quant]
 backend = "basic"
 sample_column = "filename"
@@ -60,7 +60,7 @@ reduction = "max"
 backend = "write_parquet"
 
 [peptide_output]
-location = "/data/scry-peptides/"
+location = "/data/fulcrum-peptides/"
 
 [protein_output]
-location = "/data/scry-proteins/"
+location = "/data/fulcrum-proteins/"

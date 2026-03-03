@@ -3,13 +3,13 @@
 # "Strict mode"
 set -eu -o pipefail
 
-CONTAINER=${CONTAINER:-seer/pythia-scry}
+CONTAINER=${CONTAINER:-seer/radiant-fulcrum}
 
 GIT_TAG_VERSION=$(git tag --points-at | grep -Po "^($CONTAINER/)?v?\K\d+\.\d+\.\d+.*$" | sort -Vr | head -n 1 || true)
 
 export VERSION=${VERSION:-${GIT_TAG_VERSION}}
 
-echo "Found PythiaDIA version '${VERSION}'"
+echo "Found Radiant DIA version '${VERSION}'"
 
 MAJVER=$(grep -Po '^.+?(?=\..+)' <<< "$VERSION") \
   || (echo "Could not parse major version from $VERSION" && exit 1)
