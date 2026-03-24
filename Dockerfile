@@ -10,7 +10,7 @@ ARG RADIANT_VERSION=718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/radiant-di
 FROM $RADIANT_VERSION AS base
 
 #
-# Update, upgrade, and install python / Java.
+# Update and install python / Java.
 #
 # We use a single RUN statement to reduce the number of image layers
 # created by docker, which reduces overall image size.
@@ -21,7 +21,6 @@ FROM $RADIANT_VERSION AS base
 ARG PYTHON=python3.10
 ARG JAVA=default-jre-headless
 RUN apt-get update \
-    && apt-get upgrade -y \
     && apt-get install --no-install-recommends -y $PYTHON python-is-python3 $JAVA \
     && apt-get autoremove -y \
     && apt-get clean \
