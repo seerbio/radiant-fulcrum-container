@@ -19,7 +19,7 @@ FROM $RADIANT_VERSION AS base
 # and run `apt-get clean` to remove any downloaded package archives.
 #
 ARG PYTHON=python3.10
-ARG JAVA=default-jdk-headless
+ARG JAVA=default-jre-headless
 RUN apt-get update \
     && apt-get upgrade -y \
     && apt-get install --no-install-recommends -y $PYTHON python-is-python3 $JAVA \
