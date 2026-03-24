@@ -36,7 +36,8 @@ ENV FULCRUM_VIRTUAL_ENV=/usr/local/venv
 #
 ################################################
 FROM base AS build
-# TODO: install any build-time dependencies, such as tools needed to collect runtime deps
+
+ARG PYTHON=python3.10
 
 # Install `pip` and `awscli` so we can fetch Python dependencies.
 # Re-run `apt-get update` in case the previous update was cached
