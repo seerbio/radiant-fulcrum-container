@@ -1,7 +1,7 @@
 fulcrum-ms>=1.8.0
 radiant-fulcrum-search>=0.0.4
 radiant-fulcrum-workflow>=0.2.0
-wheely-radiant>=0.13.1
+wheely-radiant>=1.1.0
 airpot>=0.7.0
 cortado-ms>=0.16.0
 proffer>=0.4.4
