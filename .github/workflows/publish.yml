@@ -5,47 +5,53 @@ on:
     types: [created]
 
 jobs:
-  publish_x86_docker:
-    runs-on: [self-hosted, aws-master, X64]
+  dummy:
+    if: false
+    runs-on: ubuntu-latest
     steps:
-      # Necessary to set up the token required to push the commit tag to GitHub
-      - name: Check out code
-        uses: actions/checkout@v4
+      - run: echo "Dummy"
 
-      - name: Tag x86 container image
-        uses: seerbio/action-tag-container@2.1.0
-        with:
-          container: seer/radiant-fulcrum
-          repository: 718843040700.dkr.ecr.us-west-2.amazonaws.com
-          build_tag_prefix: x86_64-build-
-          tag_suffix: -x86_64
-          addl_tags: latest-x86_64
+  #publish_x86_docker:
+  #  runs-on: [self-hosted, aws-master, X64]
+  #  steps:
+  #    # Necessary to set up the token required to push the commit tag to GitHub
+  #    - name: Check out code
+  #      uses: actions/checkout@v4
 
-  publish_arm_docker:
-    runs-on: [self-hosted, aws-master, ARM64]
-    steps:
-      # Necessary to set up the token required to push the commit tag to GitHub
-      - name: Check out code
-        uses: actions/checkout@v4
+  #    - name: Tag x86 container image
+  #      uses: seerbio/action-tag-container@2.1.0
+  #      with:
+  #        container: seer/radiant-fulcrum
+  #        repository: 718843040700.dkr.ecr.us-west-2.amazonaws.com
+  #        build_tag_prefix: x86_64-build-
+  #        tag_suffix: -x86_64
+  #        addl_tags: latest-x86_64
 
-      - name: Tag ARM container image
-        uses: seerbio/action-tag-container@2.1.0
-        with:
-          container: seer/radiant-fulcrum
-          repository: 718843040700.dkr.ecr.us-west-2.amazonaws.com
-          build_tag_prefix: aarch64-build-
-          tag_suffix: -aarch64
-          addl_tags: latest-aarch64
+  #publish_arm_docker:
+  #  runs-on: [self-hosted, aws-master, ARM64]
+  #  steps:
+  #    # Necessary to set up the token required to push the commit tag to GitHub
+  #    - name: Check out code
+  #      uses: actions/checkout@v4
 
-  publish_docker_manifest:
-    runs-on: [self-hosted, aws-master]
-    needs: [publish_x86_docker, publish_arm_docker]
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-      - name: Publish Docker Manifest
-        env:
-          CONTAINER: seer/radiant-fulcrum
-          REPOSITORY: 718843040700.dkr.ecr.us-west-2.amazonaws.com
-          ADDL_TAGS: latest
-        run: ./deploy_docker_manifest.sh "${ADDL_TAGS}"
+  #    - name: Tag ARM container image
+  #      uses: seerbio/action-tag-container@2.1.0
+  #      with:
+  #        container: seer/radiant-fulcrum
+  #        repository: 718843040700.dkr.ecr.us-west-2.amazonaws.com
+  #        build_tag_prefix: aarch64-build-
+  #        tag_suffix: -aarch64
+  #        addl_tags: latest-aarch64
+
+  #publish_docker_manifest:
+  #  runs-on: [self-hosted, aws-master]
+  #  needs: [publish_x86_docker, publish_arm_docker]
+  #  steps:
+  #    - name: Check out code
+  #      uses: actions/checkout@v4
+  #    - name: Publish Docker Manifest
+  #      env:
+  #        CONTAINER: seer/radiant-fulcrum
+  #        REPOSITORY: 718843040700.dkr.ecr.us-west-2.amazonaws.com
+  #        ADDL_TAGS: latest
+  #      run: ./deploy_docker_manifest.sh "${ADDL_TAGS}"
