@@ -6,7 +6,7 @@
 # that are shared between the build stage and final image.
 #
 ################################################
-ARG RADIANT_VERSION=718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/radiant-dia:latest
+ARG RADIANT_VERSION=docker.io/seerbio/radiant-dia:latest
 FROM $RADIANT_VERSION AS base
 
 #
@@ -39,7 +39,7 @@ FROM base AS build
 
 ARG PYTHON=python3.10
 
-# Install `pip` and `awscli` so we can fetch Python dependencies.
+# Install `pip` so we can fetch Python dependencies from PyPI.
 # Re-run `apt-get update` in case the previous update was cached
 # and is now out of date.
 # Using `--no-cache-dir` avoids bloating the image with downloaded
@@ -48,33 +48,18 @@ RUN apt-get update \
     && apt-get install --no-install-recommends -y python3-pip "${PYTHON}-venv" \
     && apt-get autoremove -y \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* \
-    && pip install --no-cache-dir 'awscli>=1.18.83'
+    && rm -rf /var/lib/apt/lists/*
 
-# Install Python deps from CodeArtifact
+# Install Python deps from PyPI.
 
 COPY /requirements.txt /tmp/
 
-# These need to be set in your environment as they are needed for the image build.
-# They will not be available to the container at runtime.
-#
-# Leaving this to the latest possible point in the Dockerfile as these change on a regular
-# basis. This allows Docker to cache previous layers, reducing build time.
-
-ARG AWS_DEFAULT_REGION=us-west-2
-ARG AWS_ACCESS_KEY_ID
-ARG AWS_SECRET_ACCESS_KEY
-ARG AWS_SESSION_TOKEN
-
-# Get login credentials to pull artifacts from our AWS CodeArtifact
-# and run `pip` to fetch dependencies into a virtual env.
-# Also unset the index-url for CodeArtifact to avoid leaking credentials into the `test` stage.
-
-RUN aws codeartifact login --tool pip --repository seer_ds --domain seer --domain-owner 718843040700 \
-    && python -m venv "${FULCRUM_VIRTUAL_ENV}" \
-    && pip uninstall --no-input --yes --no-cache-dir awscli \
-    && "${FULCRUM_VIRTUAL_ENV}/bin/python" -m pip install --no-input --no-cache-dir -r /tmp/requirements.txt \
-    && pip config unset global.index-url
+RUN python -m venv "${FULCRUM_VIRTUAL_ENV}" \
+    && PIP_CONFIG_FILE=/dev/null "${FULCRUM_VIRTUAL_ENV}/bin/python" -m pip install \
+        --index-url https://pypi.org/simple \
+        --no-input \
+        --no-cache-dir \
+        -r /tmp/requirements.txt
 
 ################################################
 #

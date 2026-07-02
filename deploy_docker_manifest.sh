@@ -4,20 +4,21 @@
 set -eu -o pipefail
 
 CONTAINER=${CONTAINER:-seer/radiant-fulcrum}
+TAG_MATCH_CONTAINER=${TAG_MATCH_CONTAINER:-$CONTAINER}
+REPOSITORY=${REPOSITORY:-docker.io}
 
-GIT_TAG_VERSION=$(git tag --points-at | grep -Po "^($CONTAINER/)?v?\K\d+\.\d+\.\d+.*$" | sort -Vr | head -n 1 || true)
+GIT_TAG_VERSION=$(git tag --points-at | grep -Po "^($TAG_MATCH_CONTAINER/)?v?\K\d+\.\d+\.\d+.*$" | sort -Vr | head -n 1 || true)
+VERSION=${VERSION:-$GIT_TAG_VERSION}
 
-export VERSION=${VERSION:-${GIT_TAG_VERSION}}
-
-echo "Found Radiant DIA version '${VERSION}'"
+if [[ -z "$VERSION" ]]; then
+  echo "Could not determine VERSION from env or git tags matching '$TAG_MATCH_CONTAINER'" >&2
+  exit 1
+fi
 
 MAJVER=$(grep -Po '^.+?(?=\..+)' <<< "$VERSION") \
   || (echo "Could not parse major version from $VERSION" && exit 1)
 MINVER=$(grep -Po '^.+?\..+?(?=\..+)' <<< "$VERSION") \
   || (echo "Could not parse minor version from $VERSION" && exit 1)
-
-# Log into the repository so we can push
-aws ecr get-login-password | docker login --username AWS --password-stdin $REPOSITORY
 
 # Build and push a manifest with the semantic version.
 echo "Building multi-arch manifest ${REPOSITORY}/${CONTAINER}:${VERSION}"
@@ -41,8 +42,7 @@ do
   docker manifest push --purge "${REPOSITORY}/${CONTAINER}:${TAG}"
 done
 
-# If a second argument was given, treat it as a single string of space-separated additional tags.
-# Build/push manifest with these tag(s)
+# If an argument was given, treat it as a single string of space-separated additional tags.
 for TAG in $(echo "${1:-}") ; do
   echo "Tagging ${REPOSITORY}/${CONTAINER}:${VERSION} as ${CONTAINER}:${TAG}"
 
