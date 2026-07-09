@@ -1,53 +1,53 @@
 name: Test and Lint
 on: [pull_request]
-jobs:
-  #test-x86_64:
-  #  name: Test Container (x86_64)
-  #  runs-on: [self-hosted, aws-master, X64]
-  #  steps:
-  #    - uses: actions/checkout@v4
-  #    - name: Log in to ECR
-  #      run: aws ecr get-login-password | docker login --username AWS --password-stdin 718843040700.dkr.ecr.us-west-2.amazonaws.com
-  #    - name: Pull latest Radiant
-  #      run: docker pull 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/radiant-dia:latest
-  #    - name: container-test
-  #      run: ./test-container.sh
-  #    - run: docker build -t seer/radiant-fulcrum:${{ github.sha }}_x86_64 .
-  #    #- name: trivy
-  #    #  uses: aquasecurity/trivy-action@0.34.2
-  #    #  with:
-  #    #    image-ref: seer/radiant-fulcrum:${{ github.sha }}_x86_64
-  #    #    scanners: vuln,secret
-  #    #    severity: CRITICAL,HIGH
-  #    #    exit-code: 1 # ensure detection results in failure
-  #    #    ignore-unfixed: true
-  #    #  env:
-  #    #    TRIVY_DB_REPOSITORY: public.ecr.aws/aquasecurity/trivy-db
-  #    #    TRIVY_JAVA_DB_REPOSITORY: public.ecr.aws/aquasecurity/trivy-java-db
 
-  #test-aarch64:
-  #  name: Test Container (aarch64)
-  #  runs-on: [self-hosted, aws-master, ARM64]
-  #  steps:
-  #    - uses: actions/checkout@v4
-  #    - name: Log in to ECR
-  #      run: aws ecr get-login-password | docker login --username AWS --password-stdin 718843040700.dkr.ecr.us-west-2.amazonaws.com
-  #    - name: Pull latest Radiant
-  #      run: docker pull 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/radiant-dia:latest
-  #    - name: container-test
-  #      run: ./test-container.sh
-  #    - run: docker build -t seer/radiant-fulcrum:${{ github.sha }}_aarch64 .
-  #    #- name: trivy
-  #    #  uses: aquasecurity/trivy-action@0.34.2
-  #    #  with:
-  #    #    image-ref: seer/radiant-fulcrum:${{ github.sha }}_aarch64
-  #    #    scanners: vuln,secret
-  #    #    severity: CRITICAL,HIGH
-  #    #    exit-code: 1 # ensure detection results in failure
-  #    #    ignore-unfixed: true
-  #    #  env:
-  #    #    TRIVY_DB_REPOSITORY: public.ecr.aws/aquasecurity/trivy-db
-  #    #    TRIVY_JAVA_DB_REPOSITORY: public.ecr.aws/aquasecurity/trivy-java-db
+env:
+  RADIANT_BASE_IMAGE: docker.io/seerbio/radiant-dia:latest
+
+jobs:
+  test-x86_64:
+    name: Test Container (x86_64)
+    runs-on: ubuntu-24.04 # x86_64
+    steps:
+      - uses: actions/checkout@v4
+      - name: Pull latest Radiant base image (DockerHub)
+        run: docker pull "${RADIANT_BASE_IMAGE}"
+      - name: container-test
+        run: ./test-container.sh
+      - run: docker build -t seer/radiant-fulcrum:${{ github.sha }}_x86_64 .
+      #- name: trivy
+      #  uses: aquasecurity/trivy-action@0.34.2
+      #  with:
+      #    image-ref: seer/radiant-fulcrum:${{ github.sha }}_x86_64
+      #    scanners: vuln,secret
+      #    severity: CRITICAL,HIGH
+      #    exit-code: 1 # ensure detection results in failure
+      #    ignore-unfixed: true
+      #  env:
+      #    TRIVY_DB_REPOSITORY: public.ecr.aws/aquasecurity/trivy-db
+      #    TRIVY_JAVA_DB_REPOSITORY: public.ecr.aws/aquasecurity/trivy-java-db
+
+  test-aarch64:
+    name: Test Container (aarch64)
+    runs-on: ubuntu-24.04-arm # aarch64
+    steps:
+      - uses: actions/checkout@v4
+      - name: Pull latest Radiant base image (DockerHub)
+        run: docker pull "${RADIANT_BASE_IMAGE}"
+      - name: container-test
+        run: ./test-container.sh
+      - run: docker build -t seer/radiant-fulcrum:${{ github.sha }}_aarch64 .
+      #- name: trivy
+      #  uses: aquasecurity/trivy-action@0.34.2
+      #  with:
+      #    image-ref: seer/radiant-fulcrum:${{ github.sha }}_aarch64
+      #    scanners: vuln,secret
+      #    severity: CRITICAL,HIGH
+      #    exit-code: 1 # ensure detection results in failure
+      #    ignore-unfixed: true
+      #  env:
+      #    TRIVY_DB_REPOSITORY: public.ecr.aws/aquasecurity/trivy-db
+      #    TRIVY_JAVA_DB_REPOSITORY: public.ecr.aws/aquasecurity/trivy-java-db
 
   lint-container:
     name: Lint Container
