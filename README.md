@@ -27,7 +27,7 @@ You can now use the `docker run` command to run Radiant and Fulcrum workflows.
 <details>
 <summary>Getting the latest container version</summary>
 
-To download the newest version of the container from ECR, run the following commands:
+To download the newest version of the container from Docker Hub, run the following commands:
 
 ```shell
 docker pull seerbio/radiant-fulcrum:latest
@@ -75,7 +75,7 @@ For a full list of supported parameters, see documentation for the [Radiant work
 
 You can also get help by running:
 ```shell
-docker run --rm -it seerbio/radiant_fulcrum radiant_fulcrum --help
+docker run --rm -it seerbio/radiant-fulcrum radiant_fulcrum --help
 ```
 
 ### Advanced Usage
