@@ -1,0 +1,60 @@
+# Use `workflow = "v1"` when you want full control over a non-MBR Fulcrum workflow.
+# Choose this when defaults from `workflow = "radiant"` are not enough and you need explicit stage-level settings.
+# This is the direct, low-level form of a library-free workflow.
+
+workflow = "v1"
+
+[search]
+backend = "radiant"
+location = ["…"]
+library = "/data/library.tsv"
+fasta = "/data/uniprot.fasta"
+config = "/examples/example_radiant_params.radiantConfig"
+output_location = "/data/radiant-results/"
+reuse_existing = false
+scoring = "nn"
+
+[airpot]
+backend = "none"
+
+[cortado]
+backend = "blocking_mixmax"
+method = "mixmax"
+pep_fdr_type = "psm-precursor"
+score_column = "ClassifierScore"
+desc = true
+
+[cortado.errprob_kwargs]
+decoy_ratio = 1.0
+
+[cortado.pi0_kwargs]
+subset_size = 20000
+
+[peptide_quant]
+backend = "basic"
+sample_column = "filename"
+intensity_column = "TotalIntensityRaw"
+
+[proffer]
+fasta_uri = "/data/uniprot.fasta"
+qvalue_threshold = 0.01
+heuristic = "nsp"
+reannotate = true
+
+[protein_scoring]
+rollup_level = "precursor"
+assign_confidence = true
+
+[protein_scoring.confidence_kwargs]
+score_column = "nsp"
+desc = false
+
+[protein_rollup]
+backend = "directlfq"
+qvalue_threshold = 0.01
+
+[output]
+backend = "combined"
+location = "/data/fulcrum-results/"
+qval_thresh = 0.01
+include_decoys = false
