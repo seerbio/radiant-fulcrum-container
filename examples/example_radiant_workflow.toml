@@ -6,7 +6,7 @@ workflow = "radiant"
 
 library = "/data/library.tsv"
 fasta = "/data/uniprot.fasta"
-config = "/examples/example_radiant_params.radiantConfig"
+config = "/examples/example_radiant_config.radiantConfig"
 mzml = ["…"]
 
 # Default approach is library-free (single-pass).

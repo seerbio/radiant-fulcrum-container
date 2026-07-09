@@ -1,9 +1,10 @@
-# Text describing stuff
+# Example Radiant DIA configuration file
 
 [General]
 threadCount = 16
 verbosity = 0
-reannotate = true
+reannotate = false
+shortReport = true
 
 [LibraryParams]
 chargeStateMin = 1
@@ -28,12 +29,18 @@ scanTimeWindowStDevs = 3
 subtractShadows = true
 smoothCountMS2 = 1
 stopThresholdFractionMS2 = 0.65
-#topNIntegrations = 5
 maxAnchorColumnIndex = 6
 
 [FdrParams]
 percentFDR = 1.0
 reportDecoys = true
+
+[NeuralNetParams]
+epochs = 12
+baggingSize = 10
+learningRate = 0.003
+nodesFraction = 0.5
+parallelNeuralNets = true
 
 [PeakIntegrationParams]
 filterLength = 3
