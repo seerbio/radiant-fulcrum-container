@@ -12,17 +12,14 @@ workflows using local compute resources.
 
 ### Getting started
 
-To run this container you will need to first install Docker.
+To run this container you will need to first install Docker: 
+[Docker installation guide](https://docs.docker.com/get-docker/)  
+
 It's easiest to do this on Linux (for example, an EC2 instance):
 
 ```shell
 # Ubuntu
 sudo apt install -y docker.io
-```
-
-To download the container, you must authenticate to the AWS ECR repository:
-```shell
-aws ecr get-login-password | docker login --username AWS --password-stdin 718843040700.dkr.ecr.us-west-2.amazonaws.com
 ```
 
 You can now use the `docker run` command to run Radiant and Fulcrum workflows.
@@ -33,8 +30,7 @@ You can now use the `docker run` command to run Radiant and Fulcrum workflows.
 To download the newest version of the container from ECR, run the following commands:
 
 ```shell
-aws ecr get-login-password | docker login --username AWS --password-stdin 718843040700.dkr.ecr.us-west-2.amazonaws.com
-docker pull 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/radiant-fulcrum:latest
+docker pull seerbio/radiant-fulcrum:latest
 ```
 </details>
 
@@ -45,10 +41,10 @@ You can also download a specific [release](https://github.com/seerbio/radiant-fu
 **Note:** this is _not_ the Radiant DIA version, but the version of this container!
 
 ```shell
-docker pull 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/radiant-fulcrum:0.3.0
+docker pull seerbio/radiant-fulcrum:2.3.1
 
 # Major/minor versions also work
-docker pull 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/radiant-fulcrum:0.3
+docker pull seerbio/radiant-fulcrum:2.3
 ```
 </details>
 
@@ -65,7 +61,7 @@ inside the container.
 To run the default Radiant workflow on your data files, use the following command:
 
 ```shell
-docker run --rm -it -v "$PWD:/data/" 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/radiant-fulcrum sh -c 'radiant_fulcrum -v --libfree --library /data/library.tsv --fasta /data/database.fasta --results-dir /data/radiant-output/ /data/*.mzML'
+docker run --rm -it -v "$PWD:/data/" seerbio/radiant-fulcrum sh -c 'radiant_fulcrum -v --libfree --library /data/library.tsv --fasta /data/database.fasta --results-dir /data/radiant-output/ /data/*.mzML'
 ```
 
 **Note:** When using wildcards (like `*.mzML`), you must wrap the command with `sh -c '...'`
@@ -79,7 +75,7 @@ For a full list of supported parameters, see documentation for the [Radiant work
 
 You can also get help by running:
 ```shell
-docker run --rm -it 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/radiant_fulcrum radiant_fulcrum --help
+docker run --rm -it seerbio/radiant_fulcrum radiant_fulcrum --help
 ```
 
 ### Advanced Usage
@@ -90,7 +86,7 @@ your own TOML configuration file.
 To run a Fulcrum workflow in a container, use `docker run`:
 
 ```shell
-docker run --rm -it 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/radiant-fulcrum fulcrum -v --toml-file /examples/example_fulcrum_workflow.toml
+docker run --rm -it seerbio/radiant-fulcrum fulcrum -v --toml-file /examples/example_fulcrum_workflow.toml
 ```
 
 While it's possible to [run Radiant directly](#running-radiant-dia-directly),
@@ -103,7 +99,7 @@ configured with a simple TOML file.
 
 Start with an example workflow:
 ```shell
-docker run --rm -it -v "$PWD:/data/" 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/radiant-fulcrum cp /examples/example_fulcrum_workflow.toml /data/
+docker run --rm -it -v "$PWD:/data/" seerbio/radiant-fulcrum cp /examples/example_fulcrum_workflow.toml /data/
 ```
 
 You can then edit the `example_fulcrum_workflow.toml` file in the current directory.
@@ -114,7 +110,7 @@ need to make sure files are accessed using their path in the container**; see
 To run your workflow:
 
 ```shell
-docker run --rm -it -v "$PWD:/data/" 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/radiant-fulcrum fulcrum -v --toml-file /data/example_fulcrum_workflow.toml
+docker run --rm -it -v "$PWD:/data/" seerbio/radiant-fulcrum fulcrum -v --toml-file /data/example_fulcrum_workflow.toml
 ```
 </details>
 
@@ -124,7 +120,7 @@ To launch an interactive environment with Radiant and Fulcrum installed,
 run the container with `bash`:
 
 ```shell
-$ docker run --rm -it -v $PWD:/data 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/radiant-fulcrum bash
+$ docker run --rm -it -v $PWD:/data seerbio/radiant-fulcrum bash
 # _
 ```
 
@@ -134,7 +130,7 @@ You can run any executable inside the container directly from the Docker command
 For example:
 
 ```shell
-$ docker run --rm -it -v $PWD:/data 718843040700.dkr.ecr.us-west-2.amazonaws.com/seer/radiant-fulcrum RadiantDIA --help
+$ docker run --rm -it -v $PWD:/data seerbio/radiant-fulcrum RadiantDIA --help
 "Expected 4 arguments.  Received 2"
 Usage: /usr/local/bin/radiant/RadiantDIA [options] fraglibff-path fasta-path radiant-path data-file-path
 
