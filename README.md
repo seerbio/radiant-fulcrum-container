@@ -86,7 +86,7 @@ your own TOML configuration file.
 To run a Fulcrum workflow in a container, use `docker run`:
 
 ```shell
-docker run --rm -it seerbio/radiant-fulcrum fulcrum -v --toml-file /examples/example_fulcrum_workflow.toml
+docker run --rm -it seerbio/radiant-fulcrum fulcrum -v --toml-file /examples/example_radiant_workflow.toml
 ```
 
 While it's possible to [run Radiant directly](#running-radiant-dia-directly),
@@ -99,10 +99,10 @@ configured with a simple TOML file.
 
 Start with an example workflow:
 ```shell
-docker run --rm -it -v "$PWD:/data/" seerbio/radiant-fulcrum cp /examples/example_fulcrum_workflow.toml /data/
+docker run --rm -it -v "$PWD:/data/" seerbio/radiant-fulcrum cp /examples/example_radiant_workflow.toml /data/
 ```
 
-You can then edit the `example_fulcrum_workflow.toml` file in the current directory.
+You can then edit the `example_radiant_workflow.toml` file in the current directory.
 Be sure to update the `search.location` and `ouput` `location` settings! **You will
 need to make sure files are accessed using their path in the container**; see
 [Accessing data files](#accessing-data-files) below.
@@ -110,7 +110,7 @@ need to make sure files are accessed using their path in the container**; see
 To run your workflow:
 
 ```shell
-docker run --rm -it -v "$PWD:/data/" seerbio/radiant-fulcrum fulcrum -v --toml-file /data/example_fulcrum_workflow.toml
+docker run --rm -it -v "$PWD:/data/" seerbio/radiant-fulcrum fulcrum -v --toml-file /data/example_radiant_workflow.toml
 ```
 </details>
 

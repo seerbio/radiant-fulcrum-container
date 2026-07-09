@@ -1,0 +1,41 @@
+# Use this specialized `v1` example when your main goal is library export.
+# Choose this when you want Fulcrum to write a DIA-NN-style library TSV (`write_library`) from Radiant search results.
+# For general peptide/protein outputs, prefer `example_radiant_workflow.toml` or `example_v1_workflow.toml`.
+
+workflow = "v1"
+
+[search]
+backend = "radiant"
+location = ["…"]
+library = "/data/library.tsv"
+fasta = "/data/uniprot.fasta"
+config = "/examples/example_radiant_config.radiantConfig"
+output_location = "/data/radiant-results/"
+reuse_existing = false
+scoring = "nn"
+
+[airpot]
+backend = "none"
+
+[cortado]
+backend = "blocking_mixmax"
+method = "mixmax"
+pep_fdr_type = "precursor-only"
+score_column = "ClassifierScore"
+desc = true
+
+[cortado.errprob_kwargs]
+decoy_ratio = 1.0
+
+[cortado.pi0_kwargs]
+subset_size = 20000
+
+[output]
+backend = "write_library"
+spectra_backend = "radiant"
+location = "/data/fulcrum-output/fulcrum-library.tsv"
+qval_thresh = 0.01
+include_decoys = false
+use_irt = true
+peptide_normalizer = false
+mode = "overwrite"

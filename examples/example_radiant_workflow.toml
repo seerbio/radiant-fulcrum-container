@@ -1,0 +1,26 @@
+# Recommended default: use `workflow = "radiant"` for the simplest setup.
+# Choose this when you want Radiant + Fulcrum defaults, with light customization via `overrides`.
+# This is usually easier to maintain than writing full `v1`/`mbr` configs directly.
+
+workflow = "radiant"
+
+library = "/data/library.tsv"
+fasta = "/data/uniprot.fasta"
+config = "/examples/example_radiant_config.radiantConfig"
+mzml = ["…"]
+
+# Default approach is library-free (single-pass).
+mbr = false
+fdr_thresh = 0.01
+threads = 0
+results_dir = "/data/results-radiant"
+
+# Optional examples of advanced customization.
+[overrides.search]
+reuse_existing = false
+
+[overrides.output]
+backend = "combined"
+location = "/data/fulcrum-results/"
+qval_thresh = 0.01
+include_decoys = false
