@@ -80,30 +80,26 @@ docker run --rm -it seerbio/radiant-fulcrum radiant_fulcrum --help
 
 ### Advanced Usage
 
-If the default workflow doesn't support your use case, you can run a fully customized Fulcrum workflow by generating
-your own TOML configuration file.
+If the default workflow doesn't support your use case, you can run a customized Fulcrum workflow by generating your
+own TOML configuration file.
 
-To run a Fulcrum workflow in a container, use `docker run`:
-
-```shell
-docker run --rm -it seerbio/radiant-fulcrum fulcrum -v --toml-file /examples/example_radiant_workflow.toml
-```
-
-While it's possible to [run Radiant directly](#running-radiant-dia-directly),
+Fulcrum is configured with a TOML file. While it's possible to [run Radiant directly](#running-radiant-dia-directly),
 running within a Fulcrum workflow allows processing multiple files with
-rescoring, FDR estimation, and protein inference/rollup. Fulcrum is
-configured with a simple TOML file.
+rescoring, FDR estimation, and protein inference/rollup. For most Radiant +
+Fulcrum runs, start with the recommended `workflow = "radiant"` example. It
+uses the workflow defaults while allowing the main search settings to be
+configured in one place.
 
 <details>
-<summary>Getting started with Fulcrum</summary>
+<summary>Getting started with the recommended Radiant workflow</summary>
 
-Start with an example workflow:
+Start with the recommended Radiant workflow example:
 ```shell
 docker run --rm -it -v "$PWD:/data/" seerbio/radiant-fulcrum cp /examples/example_radiant_workflow.toml /data/
 ```
 
 You can then edit the `example_radiant_workflow.toml` file in the current directory.
-Be sure to update the `search.location` and `ouput` `location` settings! **You will
+Be sure to update the `library`, `fasta`, and `mzml` paths as needed. **You will
 need to make sure files are accessed using their path in the container**; see
 [Accessing data files](#accessing-data-files) below.
 
@@ -113,6 +109,10 @@ To run your workflow:
 docker run --rm -it -v "$PWD:/data/" seerbio/radiant-fulcrum fulcrum -v --toml-file /data/example_radiant_workflow.toml
 ```
 </details>
+
+For more detailed control over individual Fulcrum stages, see the lower-level
+`v1` and `mbr` examples in [`examples/`](examples/). The `v1_write_library`
+example is provided for library-export workflows.
 
 To learn more about configuring Radiant and Fulcrum, see [`examples/`](examples/)
 

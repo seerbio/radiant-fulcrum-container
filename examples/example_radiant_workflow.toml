@@ -1,6 +1,6 @@
-# Recommended default: use `workflow = "radiant"` for the simplest setup.
-# Choose this when you want Radiant + Fulcrum defaults, with light customization via `overrides`.
-# This is usually easier to maintain than writing full `v1`/`mbr` configs directly.
+# Recommended default: use `workflow = "radiant"` for the simplest Radiant + Fulcrum setup.
+# This uses the workflow defaults, with the main search settings exposed directly below.
+# Use the lower-level `v1`/`mbr` examples only when you need direct stage-level control.
 
 workflow = "radiant"
 
@@ -15,12 +15,10 @@ fdr_thresh = 0.01
 threads = 0
 results_dir = "/data/results-radiant"
 
-# Optional examples of advanced customization.
-[overrides.search]
-reuse_existing = false
-
-[overrides.output]
-backend = "combined"
-location = "/data/fulcrum-results/"
-qval_thresh = 0.01
-include_decoys = false
+# Optional workflow customizations:
+# [overrides.search]
+# reuse_existing = true
+#
+# [overrides.output]
+# location = "/data/fulcrum-results/"
+# include_decoys = false
