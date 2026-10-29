@@ -1,7 +1,7 @@
 # Example Radiant DIA configuration file
 
 [General]
-threadCount = 16
+threadCount = 0  # 0 = use all available threads
 verbosity = 0
 reannotate = false
 shortReport = true
@@ -18,6 +18,8 @@ trancheSizeMax = 2e4
 [MS1Params]
 precursorExtractionWindowThomsons = 0.0
 ms1ExtractionWidthPPM = 20.0
+alignMs1ScanTimes = true
+ms1IntensityMinForScoring = 0
 
 [MS2Params]
 filterLengthIntegration = 5
@@ -30,17 +32,21 @@ subtractShadows = true
 smoothCountMS2 = 1
 stopThresholdFractionMS2 = 0.65
 maxAnchorColumnIndex = 6
+mainMinSimultaneousFragments = 4
+postNeuralNetSharedFragments = 2
 
 [FdrParams]
 percentFDR = 1.0
 reportDecoys = true
 
 [NeuralNetParams]
-epochs = 12
-baggingSize = 10
+epochs = 24
+baggingSize = 4
 learningRate = 0.003
 nodesFraction = 0.5
 parallelNeuralNets = true
+neuralNetEnsembleSize = 3
+neuralNetShuffleEachEpoch = true
 
 [PeakIntegrationParams]
 filterLength = 3
